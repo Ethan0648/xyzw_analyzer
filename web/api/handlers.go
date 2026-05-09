@@ -161,7 +161,7 @@ func ConsumeDebugQueue() {
 
 // HandleGamePacket 处理游戏数据包
 func HandleGamePacket(packet proxy.GamePacket) {
-	if game == nil {
+	if packet.Host == proxy.MainGameHost && packet.Session != nil && game == nil {
 		game = packet.Session
 	}
 
@@ -173,9 +173,16 @@ func HandleGamePacket(packet proxy.GamePacket) {
 		call = "server"
 	}
 
+	title := ""
+	if packet.Host == proxy.SaltAgentHost {
+		title = "【盐场AgentWS】"
+		log.Printf("【盐场AgentWS】 host=%s direction=%s byteLength=%d", packet.Host, call, len(packet.Raw))
+	}
+
 	// 广播消息到所有连接的 WebSocket 客户端
 	BroadcastMessage(WSMessage{
-		Call: call,
-		Msg:  packet.RawData,
+		Call:  call,
+		Msg:   packet.RawData,
+		Title: title,
 	})
 }

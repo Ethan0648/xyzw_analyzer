@@ -455,6 +455,12 @@ body {
   margin-right: 4px;
 }
 
+.salt-agent-title {
+  font-weight: 600;
+  margin-right: 6px;
+  color: #e6a23c;
+}
+
 /* 消息项样式优化 */
 .message-item {
   margin-bottom: 15px;

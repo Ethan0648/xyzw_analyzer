@@ -20,8 +20,9 @@ var (
 
 // WSMessage 定义发送到前端的消息结构
 type WSMessage struct {
-	Call string `json:"call"` // "client" 或 "server"
-	Msg  any    `json:"msg"`  // JSON 字符串
+	Call  string `json:"call"`           // "client" 或 "server"
+	Msg   any    `json:"msg"`            // JSON 字符串（内层游戏协议）
+	Title string `json:"title,omitempty"` // 例如 【盐场AgentWS】
 }
 
 // HandleWebSocket 处理 WebSocket 连接

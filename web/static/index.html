@@ -170,6 +170,7 @@
                             <!-- 修改消息头部，直接显示备注内容 -->
                             <div class="message-header">
                                 <div :class="['message-direction', message.call === 'client' ? 'send' : 'receive']">
+                                    <span v-if="message.title" class="salt-agent-title">{{ message.title }}</span>
                                     {{ getCurrentTime(message.timestamp) }}
                                     {{ message.call === 'client' ? 'Send:' : 'Receive:' }}
                                     <span class="cmd-text">{{ message.parsedMsg.cmd }}</span>

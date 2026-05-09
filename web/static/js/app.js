@@ -239,6 +239,7 @@ const App = {
                 const newMessage = {
                     call: message.call,
                     msg: message.msg,
+                    title: message.title || '',
                     parsedMsg: parsedMsg,
                     timestamp: Date.now(),
                     expanded: false
@@ -252,9 +253,10 @@ const App = {
                     this.messages = this.messages.slice(0, this.maxMessages);
                 }
 
-                // 如果是服务器发来的消息，执行启用的脚本
+                // 如果是服务器发来的消息，执行启用的脚本（盐场 raw 包只展示，不跑用户脚本）
                 if (message.call === 'server') {
-                    if (!this.excludedCommands.includes(parsedMsg.cmd)) {
+                    if (parsedMsg.cmd !== '__SALT_AGENT_RAW__' &&
+                        !this.excludedCommands.includes(parsedMsg.cmd)) {
                         this.executeScripts(newMessage);
                     }
                 }
@@ -266,6 +268,10 @@ const App = {
         // 执行脚本
         executeScripts(message) {
             if (!this.isConnected || !message || !message.parsedMsg) {
+                return;
+            }
+
+            if (message.parsedMsg.cmd === '__SALT_AGENT_RAW__') {
                 return;
             }
 
